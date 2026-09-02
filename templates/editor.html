@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quote Editor - {{ quote.client_name }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Web View Background & Layout */
+        body { background-color: #2c2f33; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; -webkit-print-color-adjust: exact; print-color-adjust: exact; overflow: hidden; }
+        
+        .panel-forest { background-color: #1B4332 !important; }
+        .btn-leaf { background-color: #52B788; color: white; border: none; }
+        .btn-leaf:hover { background-color: #40916c; color: white; }
+
+        .app-layout { display: flex; height: 100vh; width: 100vw; }
+        .workspace { flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; align-items: center; padding: 40px 0; gap: 40px; background-color: #212529; }
+
+        .sidebar { width: 330px; background-color: #1B4332; color: white; padding: 25px 20px; display: flex; flex-direction: column; flex-shrink: 0; box-shadow: 0 0 20px rgba(0,0,0,0.5); z-index: 10; }
+        .sidebar-left { border-right: 1px solid #112a20; }
+        .sidebar-right { border-left: 1px solid #112a20; }
+        
+        .sidebar-scroll { flex-grow: 1; overflow-y: auto; padding-right: 5px; }
+        .sidebar-section { background-color: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.1); }
+        .sidebar-title { font-size: 12px; font-weight: bold; text-transform: uppercase; color: #a4c3b2; letter-spacing: 1px; margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px; }
+
+        .sidebar-item { background-color: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 8px 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+        .page-tab { background-color: rgba(0,0,0,0.2); border: 1px solid transparent; border-radius: 8px; padding: 10px; margin-bottom: 8px; cursor: pointer; transition: 0.2s; display: flex; justify-content: space-between; align-items: center; }
+        .page-tab:hover { background-color: rgba(255,255,255,0.1); }
+        .page-tab.active-tab { border-color: #52B788; background-color: rgba(82, 183, 136, 0.15); }
+        
+        .move-btn { cursor: pointer; color: #a4c3b2; transition: 0.2s; user-select: none; }
+        .move-btn:hover { color: #fff; }
+
+        .page {
+            width: 210mm; height: 297mm !important; max-height: 297mm !important;
+            background-color: white; position: relative; box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            box-sizing: border-box; display: flex; flex-direction: column; overflow: hidden; 
+            flex-shrink: 0; page-break-after: always; cursor: pointer; transition: outline 0.2s;
+        }
+        .page.active-page { outline: 4px solid #52B788; outline-offset: 4px; }
+
+        .bg-layer { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-size: cover; background-position: center; z-index: 0; pointer-events: none; }
+        .content-layer { position: relative; z-index: 1; display: flex; flex-direction: column; height: 100%; padding: 15mm; }
+
+        [contenteditable="true"] { outline: none; border-bottom: 1px dashed transparent; transition: 0.2s; }
+        [contenteditable="true"]:hover { border-bottom: 1px dashed #b0b0b0; background-color: rgba(248, 249, 250, 0.8); }
+        .no-wrap[contenteditable="true"] { white-space: nowrap; overflow: hidden; }
+
+        .header-title { font-size: 24px; font-weight: 800; color: #1e5631; letter-spacing: -0.5px; line-height: 1.2; }
+        .tagline { font-size: 10px; font-style: italic; color: #666; letter-spacing: 1.5px; margin-bottom: 10px; }
+        .company-details, .client-details { font-size: 11px; line-height: 1.5; color: #111; }
+        .section-title { font-size: 12px; font-weight: 700; text-transform: uppercase; border-bottom: 2px solid #1e5631; padding-bottom: 4px; margin-top: 10px; margin-bottom: 10px; color: #111;}
+        
+        .table-container { flex-grow: 1; display: flex; flex-direction: column; }
+        .quote-table { width: 100%; font-size: 11px; border-collapse: collapse; table-layout: fixed; color: #2b2b2b; }
+        .quote-table th { background-color: rgba(244, 246, 248, 0.9); border-bottom: 2px solid #dcdcdc; padding: 6px 4px; font-weight: 600; text-transform: uppercase; font-size: 9px; color: #555; text-align: left; }
+        
+        /* UPDATED: Allowed word-wrap and removed height locks to let text flow */
+        .quote-table td { border-bottom: 1px solid #eeeeee; padding: 4px; vertical-align: middle; white-space: normal; word-wrap: break-word; box-sizing: border-box; }
+        
+        /* Minimum height purely to keep empty filler rows consistent */
+        .empty-row td { border-bottom: transparent !important; height: 28px; }
+
+        .terms-box { border: 1px dashed transparent; padding: 5px; font-size: 10px; line-height: 1.4; color: #444; height: 160px; overflow: hidden; }
+        .terms-box:hover { border-color: #b0b0b0; background-color: rgba(248, 249, 250, 0.5); }
+        .footer-totals { margin-top: auto; padding-top: 10px; border-top: 2px solid #1B4332; }
+
+        /* SAFARI FIX: Forces absolute scaling on print layers */
+        @page { size: A4 portrait; margin: 0; }
+        @media print {
+            body, .app-layout { display: block; height: auto; width: 100%; overflow: visible; background: none; }
+            .workspace { padding: 0; gap: 0; overflow: visible; background: none; display: block; width: 100%; }
+            .sidebar, .no-print { display: none !important; }
+            .page { 
+                box-shadow: none; margin: 0; border: none; outline: none !important; 
+                width: 100% !important; height: 100% !important; max-height: none !important;
+                page-break-after: always; break-after: page; 
+            }
+            [contenteditable="true"] { border: none !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-layout">
+    
+    <!-- LEFT SIDEBAR -->
+    <div class="sidebar sidebar-left no-print">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h5 class="fw-bold m-0 text-success">Document Flow</h5>
+            <div class="d-flex align-items-center">
+                <span id="saveStatus" class="me-3 small text-white-50" style="transition: opacity 0.3s; opacity: 0;">Saved</span>
+                <a href="/" class="btn btn-sm btn-outline-light">← Exit</a>
+            </div>
+        </div>
+
+        <div class="sidebar-scroll">
+            <div class="sidebar-section">
+                <div class="sidebar-title">1. Structure Pages</div>
+                <div id="pageListContainer" class="mb-3"></div>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-sm btn-outline-light w-50" onclick="addPage('services')">+ Service Page</button>
+                    <button class="btn btn-sm btn-outline-light w-50" onclick="addPage('plants')">+ Plants Page</button>
+                </div>
+            </div>
+
+            <div id="plantManagerContainer" class="sidebar-section" style="display: none;">
+                <div class="sidebar-title text-warning">2. Manage Plants</div>
+                <select id="plantSelect" class="form-select form-select-sm shadow-sm mb-3">
+                    <option value="" selected disabled>+ Add Plant...</option>
+                    {% for item in items %}
+                    <option value="{{ item.price }}" data-id="{{ item.id }}" data-common="{{ item.common_name or '' }}" data-height="{{ item.height or '' }}" data-spread="{{ item.spread or '' }}" data-spacing="{{ item.spacing or '' }}" data-effect="{{ item.effect or '' }}">{{ item.botanical_name }} {% if item.height %}[H: {{ item.height }}]{% endif %}</option>
+                    {% endfor %}
+                </select>
+                <div id="sidebarPlantList" class="d-flex flex-column"></div>
+            </div>
+
+            <div id="serviceManagerContainer" class="sidebar-section" style="display: none;">
+                <div class="sidebar-title text-warning">2. Manage Services</div>
+                <select id="serviceSelect" class="form-select form-select-sm shadow-sm mb-3">
+                    <option value="" selected disabled>+ Add Labour / Service...</option>
+                    {% for s in services %}
+                    <option value="{{ s.price }}" data-unit="{{ s.unit_type or '' }}">{{ s.description }}</option>
+                    {% endfor %}
+                </select>
+                <div id="sidebarServiceList" class="d-flex flex-column"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CENTER (WORKSPACE) -->
+    <div class="workspace" id="documentContainer"></div>
+
+    <!-- RIGHT SIDEBAR -->
+    <div class="sidebar sidebar-right no-print">
+        <h5 class="fw-bold mb-4 text-success">Design & Settings</h5>
+        <div class="sidebar-scroll">
+            <div id="pageSettingsContainer" class="sidebar-section" style="display: none;">
+                <div class="sidebar-title text-warning">Page Settings</div>
+                <div class="form-check form-switch d-flex align-items-center gap-2 m-0 p-0">
+                    <input class="form-check-input m-0" type="checkbox" id="taxToggle" onchange="toggleTax()" style="width: 35px; height: 20px; cursor: pointer;">
+                    <label class="form-check-label small fw-bold mt-1" for="taxToggle">Enable 18% GST Tax</label>
+                </div>
+            </div>
+
+            <div class="sidebar-section" id="columnSettingsContainer" style="display: none;">
+                <div class="sidebar-title">Global Columns (Plants)</div>
+                <div class="d-flex flex-wrap gap-2">
+                    <label class="small w-100"><input type="checkbox" id="toggleCommon" checked class="form-check-input me-1"> Common Name</label>
+                    <label class="small w-100"><input type="checkbox" id="toggleHeight" checked class="form-check-input me-1"> Height</label>
+                    <label class="small w-100"><input type="checkbox" id="toggleSpread" checked class="form-check-input me-1"> Spread</label>
+                    <label class="small w-100"><input type="checkbox" id="toggleSpacing" checked class="form-check-input me-1"> Spacing</label>
+                    <label class="small w-100"><input type="checkbox" id="toggleEffect" checked class="form-check-input me-1"> Effect</label>
+                </div>
+            </div>
+
+            <div class="sidebar-section mb-0">
+                <div class="sidebar-title">Branding</div>
+                <label class="small mb-1">Company Logo:</label>
+                <input type="file" id="logoUpload" class="form-control form-control-sm mb-3" accept="image/*">
+                <form action="/upload_bg/{{ quote.id }}" method="POST" enctype="multipart/form-data" class="mb-3">
+                    <label class="small mb-1">Global Background:</label>
+                    <div class="d-flex gap-2">
+                        <input type="file" name="bg_image" class="form-control form-control-sm" accept="image/*" required>
+                        <button type="submit" class="btn btn-sm btn-light text-success fw-bold">Set</button>
+                    </div>
+                </form>
+                <label class="small mb-1">Opacity:</label>
+                <input type="range" id="bgOpacity" class="form-range" min="0.1" max="1" step="0.05" value="1">
+            </div>
+        </div>
+        <div class="d-grid mt-3">
+            <button onclick="window.print()" class="btn btn-leaf btn-lg fw-bold shadow-sm">Download PDF</button>
+        </div>
+    </div>
+</div>
+
+<!-- HIDDEN SAVED DATA -->
+<div id="savedDocumentData" style="display: none;">{{ quote.document_data or '' }}</div>
+<div id="preloadedItemsData" data-ids="{{ quote.preloaded_items or '' }}" style="display: none;"></div>
+
+<script>
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && e.target.classList.contains('no-wrap')) {
+            e.preventDefault(); e.target.blur(); 
+        }
+    });
+
+    const todayStr = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+    const bgImageUrl = {% if quote.bg_image %}"/static/uploads/{{ quote.bg_image }}"{% else %}null{% endif %};
+    let logoDataUrl = '';
+    
+    let documentPages = [];
+    let activePageId = null;
+
+    let headerState = {
+        company: "The Plant Nursery and Farm",
+        tagline: "ROOTED IN NATURE, GROWN WITH CARE",
+        address: "Ardi- Sandesar, Anand, Gujarat",
+        phone: "+91 8160801441, +91 6354908545, +91 6353239677",
+        email: "theplant.org@gmail.com",
+        gst: "24AAWUPP6555H1ZV",
+        udyam: "UDYAM-GJ-03-0066664",
+        date: todayStr,
+        project: `{{ quote.client_name }}`,
+        payment: "THE PLANT<br>Account No: 03050200001784<br>Bank of Baroda<br>IFSC Code: BARB0KARAMS<br>BRANCH: KARAMSAD"
+    };
+
+    const defaultTerms = `
+        <div class="fw-bold mb-1">Terms & Payment Schedule:</div>
+        <ul style="margin: 0; padding-left: 20px;">
+            <li>20% Advance: Payable upon confirmation.</li>
+            <li>10% Mobilization: Payable upon team deployment.</li>
+            <li>Progressive Payments: Cleared in installments via running bills.</li>
+        </ul>
+        <div class="fw-bold mt-2 mb-1">SCOPE & PRICING NOTES:</div>
+        <ul style="margin: 0; padding-left: 20px;">
+            <li>Freight & Transport: Billed strictly based on actual dispatch weights.</li>
+            <li>Tax Exemption: Live plants are 0% GST. 18% GST applies strictly to labor and maintenance.</li>
+        </ul>
+    `;
+
+    let saveTimeout;
+    function triggerSave() {
+        clearTimeout(saveTimeout);
+        const statusEl = document.getElementById('saveStatus');
+        statusEl.innerText = "Saving...";
+        statusEl.style.opacity = 1;
+        
+        saveTimeout = setTimeout(() => {
+            const payload = {
+                pages: documentPages,
+                header: headerState
+            };
+            fetch(`/save_quote/{{ quote.id }}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ document_data: JSON.stringify(payload) })
+            }).then(() => {
+                statusEl.innerText = "Saved";
+                setTimeout(() => statusEl.style.opacity = 0, 2000);
+            });
+        }, 1000);
+    }
+
+    window.onload = function() {
+        const savedStr = document.getElementById('savedDocumentData').innerText;
+        
+        if (savedStr && savedStr.trim() !== "None" && savedStr.trim() !== "") {
+            const parsed = JSON.parse(savedStr);
+            documentPages = parsed.pages;
+            
+            // "UNDEFINED" BUG FIX: safely merge saved header with defaults to catch missing fields
+            if(parsed.header) {
+                headerState.company = parsed.header.company || headerState.company;
+                headerState.tagline = parsed.header.tagline || headerState.tagline;
+                headerState.address = parsed.header.address || headerState.address;
+                headerState.phone = parsed.header.phone || headerState.phone;
+                headerState.email = parsed.header.email || headerState.email;
+                headerState.gst = parsed.header.gst || headerState.gst;
+                headerState.udyam = parsed.header.udyam || headerState.udyam;
+                headerState.date = parsed.header.date || headerState.date;
+                headerState.project = parsed.header.project || headerState.project;
+                headerState.payment = parsed.header.payment || headerState.payment;
+            }
+            selectPage(documentPages[0].id);
+        } else {
+            const preloadedStr = document.getElementById('preloadedItemsData').getAttribute('data-ids');
+            let initialPlants = [];
+            if (preloadedStr) {
+                const preloadedIds = preloadedStr.split(',');
+                Array.from(document.getElementById('plantSelect').options).forEach(opt => {
+                    if (preloadedIds.includes(opt.getAttribute('data-id'))) {
+                        initialPlants.push({
+                            name: opt.text, common: opt.getAttribute('data-common') || '', height: opt.getAttribute('data-height') || '',
+                            spread: opt.getAttribute('data-spread') || '', spacing: opt.getAttribute('data-spacing') || '',
+                            effect: opt.getAttribute('data-effect') || '', qty: 1, price: parseFloat(opt.value) || 0
+                        });
+                    }
+                });
+            }
+            documentPages.push({ id: 'page-' + Date.now(), type: 'services', items: [], terms: defaultTerms, hasTax: true });
+            documentPages.push({ id: 'page-' + (Date.now()+1), type: 'plants', items: initialPlants });
+            selectPage(documentPages[0].id);
+        }
+    };
+
+    window.movePage = function(id, direction) {
+        const index = documentPages.findIndex(p => p.id === id);
+        if (index === -1) return;
+        const newIndex = index + direction;
+        if (newIndex < 0 || newIndex >= documentPages.length) return;
+        const temp = documentPages[index];
+        documentPages[index] = documentPages[newIndex];
+        documentPages[newIndex] = temp;
+        updateUI(); triggerSave();
+    };
+
+    window.moveItem = function(pageId, index, direction) {
+        const page = documentPages.find(p => p.id === pageId);
+        if (!page) return;
+        const newIndex = index + direction;
+        if (newIndex < 0 || newIndex >= page.items.length) return;
+        const temp = page.items[index];
+        page.items[index] = page.items[newIndex];
+        page.items[newIndex] = temp;
+        updateUI(); triggerSave();
+    };
+
+    function addPage(type) {
+        const newId = 'page-' + Date.now();
+        if(type === 'services') {
+            documentPages.push({ id: newId, type: 'services', items: [], terms: defaultTerms, hasTax: true });
+        } else {
+            documentPages.push({ id: newId, type: 'plants', items: [] });
+        }
+        triggerSave();
+        selectPage(newId);
+    }
+
+    function deletePage(id) {
+        if(documentPages.length === 1) return alert("Document must have at least one page.");
+        documentPages = documentPages.filter(p => p.id !== id);
+        triggerSave();
+        selectPage(documentPages[0].id);
+    }
+
+    function selectPage(id) {
+        if (activePageId === id) return; 
+        activePageId = id;
+        updateUI();
+        setTimeout(() => {
+            const el = document.getElementById(id);
+            if(el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 50);
+    }
+
+    function updateUI() {
+        renderLeftSidebar();
+        renderRightSidebar();
+        renderWorkspace();
+    }
+
+    function renderLeftSidebar() {
+        const listContainer = document.getElementById('pageListContainer');
+        listContainer.innerHTML = '';
+        
+        documentPages.forEach((page, index) => {
+            const isActive = page.id === activePageId;
+            const title = page.type === 'services' ? `Service & Labour` : `Plant Inventory`;
+            const icon = page.type === 'services' ? '📄' : '🌿';
+            
+            listContainer.innerHTML += `
+                <div class="page-tab ${isActive ? 'active-tab' : ''}" onclick="selectPage('${page.id}')">
+                    <span class="small fw-bold">${icon} ${title}</span>
+                    <div class="d-flex align-items-center">
+                        <span class="move-btn me-2" style="${index === 0 ? 'opacity: 0.2; pointer-events: none;' : ''}" onclick="event.stopPropagation(); movePage('${page.id}', -1)" title="Move Up">▲</span>
+                        <span class="move-btn me-3" style="${index === documentPages.length - 1 ? 'opacity: 0.2; pointer-events: none;' : ''}" onclick="event.stopPropagation(); movePage('${page.id}', 1)" title="Move Down">▼</span>
+                        <button class="btn btn-sm text-danger p-0 m-0 border-0" onclick="event.stopPropagation(); deletePage('${page.id}')" title="Delete Page">✕</button>
+                    </div>
+                </div>
+            `;
+        });
+
+        const activePage = documentPages.find(p => p.id === activePageId);
+        if(activePage.type === 'plants') {
+            document.getElementById('plantManagerContainer').style.display = 'block';
+            document.getElementById('serviceManagerContainer').style.display = 'none';
+            renderItemList('sidebarPlantList', activePage);
+        } else {
+            document.getElementById('plantManagerContainer').style.display = 'none';
+            document.getElementById('serviceManagerContainer').style.display = 'block';
+            renderItemList('sidebarServiceList', activePage);
+        }
+    }
+
+    function renderItemList(containerId, page) {
+        const list = document.getElementById(containerId);
+        list.innerHTML = '';
+        if(page.items.length === 0) {
+            list.innerHTML = `<div class="small text-white-50 mt-2">No items added to this page.</div>`;
+            return;
+        }
+        page.items.forEach((item, index) => {
+            const cleanName = item.name.split(' [H:')[0];
+            const qtyBox = page.type === 'services' ? 
+                `<input type="text" class="form-control form-control-sm text-center fw-bold px-1" style="width: 75px; height: 26px; font-size: 10px;" value="${item.qty_str}" onchange="updateServiceQty('${page.id}', ${index}, this.value)">` :
+                `<input type="number" min="1" class="form-control form-control-sm text-center fw-bold" style="width: 50px; height: 26px;" value="${item.qty}" onchange="updatePlantQty('${page.id}', ${index}, this.value)">`;
+
+            list.innerHTML += `
+                <div class="sidebar-item">
+                    <div style="max-width: ${page.type === 'services' ? '100px' : '110px'};">
+                        <div class="fw-bold small text-truncate" title="${cleanName}">${cleanName}</div>
+                        <div style="font-size: 10px; color: #a4c3b2;">₹${item.price.toFixed(2)}</div>
+                    </div>
+                    <div class="d-flex align-items-center gap-1">
+                        <div class="d-flex flex-column align-items-center justify-content-center me-1" style="line-height: 1;">
+                            <span class="move-btn" style="font-size: 11px; ${index === 0 ? 'opacity: 0.2; pointer-events: none;' : ''}" onclick="moveItem('${page.id}', ${index}, -1)">▲</span>
+                            <span class="move-btn" style="font-size: 11px; ${index === page.items.length - 1 ? 'opacity: 0.2; pointer-events: none;' : ''}" onclick="moveItem('${page.id}', ${index}, 1)">▼</span>
+                        </div>
+                        ${qtyBox}
+                        <button class="btn btn-sm btn-danger border-0 d-flex align-items-center justify-content-center" style="height: 26px; width: 26px; padding: 0;" onclick="deleteItem('${page.id}', ${index})">✕</button>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    function renderRightSidebar() {
+        const activePage = documentPages.find(p => p.id === activePageId);
+        if(activePage.type === 'services') {
+            document.getElementById('pageSettingsContainer').style.display = 'block';
+            document.getElementById('columnSettingsContainer').style.display = 'none';
+            document.getElementById('taxToggle').checked = activePage.hasTax;
+        } else {
+            document.getElementById('pageSettingsContainer').style.display = 'none';
+            document.getElementById('columnSettingsContainer').style.display = 'block';
+        }
+    }
+
+    function generateHeader(title) {
+        const logoHtml = logoDataUrl ? `<div class="me-3"><img src="${logoDataUrl}" style="max-height: 70px; max-width: 120px; object-fit: contain;"></div>` : '';
+        return `
+            <div class="row mb-2">
+                <div class="col-7 d-flex align-items-center">
+                    ${logoHtml}
+                    <div>
+                        <div class="header-title no-wrap" contenteditable="true" onblur="updateHeader('company', this.innerText)">${headerState.company}</div>
+                        <div class="tagline no-wrap" contenteditable="true" onblur="updateHeader('tagline', this.innerText)">${headerState.tagline}</div>
+                        <div class="company-details mt-1">
+                            <strong>Address:</strong> <span class="no-wrap" contenteditable="true" onblur="updateHeader('address', this.innerText)">${headerState.address}</span><br>
+                            <strong>Phone no.:</strong> <span class="no-wrap" contenteditable="true" onblur="updateHeader('phone', this.innerText)">${headerState.phone}</span><br>
+                            <strong>Email id.:</strong> <span class="no-wrap" contenteditable="true" onblur="updateHeader('email', this.innerText)">${headerState.email}</span><br>
+                            <strong>GST no.:</strong> <span class="no-wrap" contenteditable="true" onblur="updateHeader('gst', this.innerText)">${headerState.gst}</span><br>
+                            <strong>Udyam:</strong> <span class="no-wrap" contenteditable="true" onblur="updateHeader('udyam', this.innerText)">${headerState.udyam}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-5 client-details text-end">
+                    <div class="mb-1"><strong>Date:</strong> <span class="no-wrap" contenteditable="true" onblur="updateHeader('date', this.innerText)">${headerState.date}</span></div>
+                    <div class="mb-2"><strong>Project Name:</strong> <br><span class="no-wrap fw-bold text-success" style="font-size: 14px;" contenteditable="true" onblur="updateHeader('project', this.innerText)">${headerState.project}</span></div>
+                </div>
+            </div>
+            <div class="section-title">${title}</div>
+        `;
+    }
+
+    window.updateHeader = function(field, val) {
+        headerState[field] = val;
+        triggerSave();
+    };
+
+    function renderWorkspace() {
+        const container = document.getElementById('documentContainer');
+        container.innerHTML = '';
+        const bgStyle = bgImageUrl ? `style="background-image: url('${bgImageUrl}'); opacity: ${document.getElementById('bgOpacity').value};"` : ``;
+
+        documentPages.forEach((page) => {
+            const isActive = page.id === activePageId;
+            const format = (n) => `₹${n.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+            // --- SERVICES PAGE ---
+            if(page.type === 'services') {
+                let subtotal = 0;
+                page.items.forEach(i => subtotal += (i.qty_num * i.price));
+                const tax = page.hasTax ? (subtotal * 0.18) : 0;
+                const total = subtotal + tax;
+
+                let rowsHtml = '';
+                page.items.forEach((item, idx) => {
+                    const lineTotal = item.qty_num * item.price;
+                    rowsHtml += `
+                        <tr>
+                            <td class="text-muted text-center" style="width:40px;">${idx + 1}</td>
+                            <td class="fw-semibold" contenteditable="true" onblur="updateRowName('${page.id}', ${idx}, this)">${item.name}</td>
+                            <td class="price" contenteditable="true" onblur="updateRowPrice('${page.id}', ${idx}, this)">${item.price.toFixed(2)} ${item.unit}</td>
+                            <td class="text-center no-wrap">${item.qty_str}</td>
+                            <td class="row-total fw-bold text-end pe-2">${lineTotal.toFixed(2)}</td>
+                        </tr>
+                    `;
+                });
+
+                // REDUCED CHUNK SIZE for services to allow wrapping
+                for (let i = page.items.length; i < 8; i++) {
+                    rowsHtml += `<tr class="empty-row"><td></td><td></td><td></td><td></td><td></td></tr>`;
+                }
+
+                container.innerHTML += `
+                    <div class="page ${isActive ? 'active-page' : ''}" id="${page.id}" onclick="selectPage('${page.id}')">
+                        <div class="bg-layer" ${bgStyle}></div>
+                        <div class="content-layer">
+                            ${generateHeader("Scope of Services & Labour Details")}
+                            <div class="table-container" style="flex-grow: 0; min-height: 200px;">
+                                <table class="quote-table">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center" style="width: 40px;">SR. NO.</th>
+                                            <th>DESCRIPTION</th>
+                                            <th style="width: 110px;">UNIT PRICE</th>
+                                            <th class="text-center" style="width: 100px;">QUANTITY</th>
+                                            <th class="text-end pe-2" style="width: 100px;">TOTAL</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>${rowsHtml}</tbody>
+                                </table>
+                            </div>
+                            
+                            <div class="terms-box mt-2" contenteditable="true" onblur="saveTerms('${page.id}', this.innerHTML)">
+                                ${page.terms}
+                            </div>
+                            
+                            <div class="row footer-totals align-items-end mt-auto">
+                                <div class="col-7">
+                                    <div class="p-2 rounded" style="font-size: 10px; background-color: rgba(233, 236, 239, 0.9); border-left: 4px solid #1B4332; line-height: 1.3;">
+                                        <strong class="d-block text-decoration-underline mb-1" style="font-size: 11px;">PAYMENT METHOD</strong>
+                                        <div contenteditable="true" onblur="updateHeader('payment', this.innerHTML)">${headerState.payment}</div>
+                                    </div>
+                                </div>
+                                <div class="col-5">
+                                    <table class="quote-table mt-0 border-0" style="font-size: 12px;">
+                                        <tr><td class="text-end border-0 pb-1 text-muted">Subtotal:</td><td class="text-end border-0 pb-1 fw-bold">${format(subtotal)}</td></tr>
+                                        ${page.hasTax ? `<tr><td class="text-end border-0 pb-1 text-muted">Tax (18%):</td><td class="text-end border-0 pb-1 fw-bold">${format(tax)}</td></tr>` : ''}
+                                        <tr><td class="text-end border-top pt-1"><strong style="color: #1e5631; font-size: 14px;">TOTAL:</strong></td><td class="text-end border-top pt-1"><strong style="color: #1e5631; font-size: 15px;">${format(total)}</strong></td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } 
+            
+            // --- PLANTS PAGE ---
+            if(page.type === 'plants') {
+                // REDUCED CHUNK SIZE for plants to allow wrapping
+                const chunkSize = 13; 
+                const chunks = [];
+                for (let i = 0; i < page.items.length; i += chunkSize) chunks.push(page.items.slice(i, i + chunkSize));
+                if (chunks.length === 0) chunks.push([]);
+
+                let grandTotal = 0;
+                page.items.forEach(i => grandTotal += (i.qty * i.price));
+
+                chunks.forEach((pageItems, chunkIndex) => {
+                    let rowsHtml = '';
+                    pageItems.forEach((item, idx) => {
+                        const globalIdx = (chunkIndex * chunkSize) + idx;
+                        const cleanName = item.name.split(' [H:')[0]; 
+                        rowsHtml += `
+                            <tr>
+                                <td class="text-muted text-center" style="width:30px;">${globalIdx + 1}</td>
+                                <td class="fw-semibold" contenteditable="true" onblur="updateRowName('${page.id}', ${globalIdx}, this)">${cleanName}</td>
+                                <td class="col-common" contenteditable="true">${item.common}</td>
+                                <td class="col-height" contenteditable="true">${item.height}</td>
+                                <td class="col-spread" contenteditable="true">${item.spread}</td>
+                                <td class="col-spacing" contenteditable="true">${item.spacing}</td>
+                                <td class="col-effect" contenteditable="true">${item.effect}</td>
+                                <td class="qty">${item.qty}</td>
+                                <td class="price no-wrap" contenteditable="true" onblur="updateRowPrice('${page.id}', ${globalIdx}, this)">${item.price.toFixed(2)}</td>
+                                <td class="row-total fw-bold text-end pe-2">${(item.qty * item.price).toFixed(2)}</td>
+                            </tr>
+                        `;
+                    });
+
+                    for (let i = pageItems.length; i < chunkSize; i++) {
+                        rowsHtml += `<tr class="empty-row"><td></td><td></td><td class="col-common"></td><td class="col-height"></td><td class="col-spread"></td><td class="col-spacing"></td><td class="col-effect"></td><td></td><td></td><td></td></tr>`;
+                    }
+
+                    const domId = chunkIndex === 0 ? `id="${page.id}"` : '';
+
+                    container.innerHTML += `
+                        <div class="page ${isActive ? 'active-page' : ''}" ${domId} onclick="selectPage('${page.id}')">
+                            <div class="bg-layer" ${bgStyle}></div>
+                            <div class="content-layer">
+                                ${generateHeader(`Plant Inventory & Specification`)}
+                                <div class="table-container">
+                                    <table class="quote-table">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center" style="width: 30px;">SR.</th>
+                                                <th style="width: 25%;">BOTANICAL NAME</th>
+                                                <th class="col-common">COMMON NAME</th>
+                                                <th class="col-height" style="width: 10%;">HEIGHT</th>
+                                                <th class="col-spread">SPREAD</th>
+                                                <th class="col-spacing">SPACING</th>
+                                                <th class="col-effect">EFFECT</th>
+                                                <th style="width: 35px;">QTY</th>
+                                                <th style="width: 55px;">PRICE</th>
+                                                <th class="text-end pe-2" style="width: 75px;">TOTAL</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>${rowsHtml}</tbody>
+                                    </table>
+                                </div>
+                                <div class="row footer-totals align-items-end mt-auto">
+                                    <div class="col-7">
+                                        <div class="p-2 rounded" style="font-size: 10px; background-color: rgba(233, 236, 239, 0.9); border-left: 4px solid #1B4332; line-height: 1.3;">
+                                            <strong class="d-block text-decoration-underline mb-1" style="font-size: 11px;">PAYMENT METHOD</strong>
+                                            <div contenteditable="true" onblur="updateHeader('payment', this.innerHTML)">${headerState.payment}</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-5">
+                                        <table class="quote-table mt-0 border-0" style="font-size: 14px;">
+                                            <tr><td class="text-end border-0 pt-2"><strong style="color: #1e5631;">GRAND TOTAL:</strong></td><td class="text-end border-0 pt-2"><strong style="color: #1e5631; font-size: 16px;">${format(grandTotal)}</strong></td></tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+        });
+
+        applyColumnToggles();
+    }
+
+    // ACTIONS
+    document.getElementById('plantSelect').addEventListener('change', function() {
+        if (!this.value || !activePageId) return;
+        const page = documentPages.find(p => p.id === activePageId);
+        const opt = this.options[this.selectedIndex];
+        page.items.push({
+            name: opt.text, common: opt.getAttribute('data-common') || '', height: opt.getAttribute('data-height') || '',
+            spread: opt.getAttribute('data-spread') || '', spacing: opt.getAttribute('data-spacing') || '',
+            effect: opt.getAttribute('data-effect') || '', qty: 1, price: parseFloat(opt.value) || 0
+        });
+        this.value = ''; updateUI(); triggerSave();
+    });
+
+    document.getElementById('serviceSelect').addEventListener('change', function() {
+        if (!this.value || !activePageId) return;
+        const page = documentPages.find(p => p.id === activePageId);
+        const opt = this.options[this.selectedIndex];
+        page.items.push({
+            name: opt.text.trim(), price: parseFloat(opt.value) || 0, unit: opt.getAttribute('data-unit') || '',
+            qty_str: '1', qty_num: 1
+        });
+        this.value = ''; updateUI(); triggerSave();
+    });
+
+    window.updatePlantQty = function(pageId, index, val) {
+        const page = documentPages.find(p => p.id === pageId);
+        const pVal = parseInt(val);
+        page.items[index].qty = isNaN(pVal) || pVal < 1 ? 1 : pVal;
+        updateUI(); triggerSave();
+    };
+
+    window.updateServiceQty = function(pageId, index, strVal) {
+        const page = documentPages.find(p => p.id === pageId);
+        page.items[index].qty_str = strVal; 
+        const numericMatch = strVal.match(/[\d,.]+/);
+        page.items[index].qty_num = numericMatch ? parseFloat(numericMatch[0].replace(/,/g, '')) : 1;
+        updateUI(); triggerSave();
+    };
+
+    window.deleteItem = function(pageId, index) {
+        documentPages.find(p => p.id === pageId).items.splice(index, 1);
+        updateUI(); triggerSave();
+    };
+
+    window.updateRowName = function(pageId, index, element) {
+        documentPages.find(p => p.id === pageId).items[index].name = element.innerText;
+        triggerSave();
+    };
+
+    window.updateRowPrice = function(pageId, index, element) {
+        const val = parseFloat(element.innerText.replace(/[^\d.-]/g, ''));
+        documentPages.find(p => p.id === pageId).items[index].price = isNaN(val) ? 0 : val;
+        updateUI(); triggerSave();
+    };
+
+    window.saveTerms = function(pageId, html) {
+        documentPages.find(p => p.id === pageId).terms = html;
+        triggerSave();
+    };
+
+    window.toggleTax = function() {
+        if(!activePageId) return;
+        documentPages.find(p => p.id === activePageId).hasTax = document.getElementById('taxToggle').checked;
+        updateUI(); triggerSave();
+    };
+
+    const toggleIds = ['toggleCommon', 'toggleHeight', 'toggleSpread', 'toggleSpacing', 'toggleEffect'];
+    function applyColumnToggles() {
+        toggleIds.forEach(id => {
+            const el = document.getElementById(id);
+            if(!el) return;
+            const isChecked = el.checked;
+            const colClass = '.col-' + id.replace('toggle', '').toLowerCase();
+            document.querySelectorAll(colClass).forEach(cell => cell.style.display = isChecked ? 'table-cell' : 'none');
+        });
+    }
+    toggleIds.forEach(id => document.getElementById(id).addEventListener('change', () => { updateUI(); triggerSave(); }));
+
+    document.getElementById('bgOpacity').addEventListener('input', e => {
+        document.querySelectorAll('.bg-layer').forEach(bg => bg.style.opacity = e.target.value);
+    });
+
+    document.getElementById('logoUpload').addEventListener('change', e => {
+        if (e.target.files[0]) {
+            const reader = new FileReader();
+            reader.onload = event => { logoDataUrl = event.target.result; updateUI(); }
+            reader.readAsDataURL(e.target.files[0]);
+        }
+    });
+</script>
+</body>
+</html>
