@@ -55,17 +55,15 @@
         .quote-table { width: 100%; font-size: 11px; border-collapse: collapse; table-layout: fixed; color: #2b2b2b; }
         .quote-table th { background-color: rgba(244, 246, 248, 0.9); border-bottom: 2px solid #dcdcdc; padding: 6px 4px; font-weight: 600; text-transform: uppercase; font-size: 9px; color: #555; text-align: left; }
         
-        /* UPDATED: Allowed word-wrap and removed height locks to let text flow */
         .quote-table td { border-bottom: 1px solid #eeeeee; padding: 4px; vertical-align: middle; white-space: normal; word-wrap: break-word; box-sizing: border-box; }
         
-        /* Minimum height purely to keep empty filler rows consistent */
         .empty-row td { border-bottom: transparent !important; height: 28px; }
 
         .terms-box { border: 1px dashed transparent; padding: 5px; font-size: 10px; line-height: 1.4; color: #444; height: 160px; overflow: hidden; }
         .terms-box:hover { border-color: #b0b0b0; background-color: rgba(248, 249, 250, 0.5); }
         .footer-totals { margin-top: auto; padding-top: 10px; border-top: 2px solid #1B4332; }
 
-        /* SAFARI FIX: Forces absolute scaling on print layers */
+        /* SAFARI FIX */
         @page { size: A4 portrait; margin: 0; }
         @media print {
             body, .app-layout { display: block; height: auto; width: 100%; overflow: visible; background: none; }
@@ -194,8 +192,6 @@
     let activePageId = null;
 
     let headerState = {
-        company: "The Plant Nursery and Farm",
-        tagline: "ROOTED IN NATURE, GROWN WITH CARE",
         address: "Ardi- Sandesar, Anand, Gujarat",
         phone: "+91 8160801441, +91 6354908545, +91 6353239677",
         email: "theplant.org@gmail.com",
@@ -250,10 +246,7 @@
             const parsed = JSON.parse(savedStr);
             documentPages = parsed.pages;
             
-            // "UNDEFINED" BUG FIX: safely merge saved header with defaults to catch missing fields
             if(parsed.header) {
-                headerState.company = parsed.header.company || headerState.company;
-                headerState.tagline = parsed.header.tagline || headerState.tagline;
                 headerState.address = parsed.header.address || headerState.address;
                 headerState.phone = parsed.header.phone || headerState.phone;
                 headerState.email = parsed.header.email || headerState.email;
@@ -418,38 +411,6 @@
         }
     }
 
-    function generateHeader(title) {
-        const logoHtml = logoDataUrl ? `<div class="me-3"><img src="${logoDataUrl}" style="max-height: 70px; max-width: 120px; object-fit: contain;"></div>` : '';
-        return `
-            <div class="row mb-2">
-                <div class="col-7 d-flex align-items-center">
-                    ${logoHtml}
-                    <div>
-                        <div class="header-title no-wrap" contenteditable="true" onblur="updateHeader('company', this.innerText)">${headerState.company}</div>
-                        <div class="tagline no-wrap" contenteditable="true" onblur="updateHeader('tagline', this.innerText)">${headerState.tagline}</div>
-                        <div class="company-details mt-1">
-                            <strong>Address:</strong> <span class="no-wrap" contenteditable="true" onblur="updateHeader('address', this.innerText)">${headerState.address}</span><br>
-                            <strong>Phone no.:</strong> <span class="no-wrap" contenteditable="true" onblur="updateHeader('phone', this.innerText)">${headerState.phone}</span><br>
-                            <strong>Email id.:</strong> <span class="no-wrap" contenteditable="true" onblur="updateHeader('email', this.innerText)">${headerState.email}</span><br>
-                            <strong>GST no.:</strong> <span class="no-wrap" contenteditable="true" onblur="updateHeader('gst', this.innerText)">${headerState.gst}</span><br>
-                            <strong>Udyam:</strong> <span class="no-wrap" contenteditable="true" onblur="updateHeader('udyam', this.innerText)">${headerState.udyam}</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-5 client-details text-end">
-                    <div class="mb-1"><strong>Date:</strong> <span class="no-wrap" contenteditable="true" onblur="updateHeader('date', this.innerText)">${headerState.date}</span></div>
-                    <div class="mb-2"><strong>Project Name:</strong> <br><span class="no-wrap fw-bold text-success" style="font-size: 14px;" contenteditable="true" onblur="updateHeader('project', this.innerText)">${headerState.project}</span></div>
-                </div>
-            </div>
-            <div class="section-title">${title}</div>
-        `;
-    }
-
-    window.updateHeader = function(field, val) {
-        headerState[field] = val;
-        triggerSave();
-    };
-
     function renderWorkspace() {
         const container = document.getElementById('documentContainer');
         container.innerHTML = '';
@@ -480,8 +441,8 @@
                     `;
                 });
 
-                // REDUCED CHUNK SIZE for services to allow wrapping
-                for (let i = page.items.length; i < 8; i++) {
+                // REDUCED TO 6 to allow space for the taller stacked header
+                for (let i = page.items.length; i < 6; i++) {
                     rowsHtml += `<tr class="empty-row"><td></td><td></td><td></td><td></td><td></td></tr>`;
                 }
 
@@ -531,8 +492,8 @@
             
             // --- PLANTS PAGE ---
             if(page.type === 'plants') {
-                // REDUCED CHUNK SIZE for plants to allow wrapping
-                const chunkSize = 13; 
+                // REDUCED TO 11 to allow space for the taller stacked header
+                const chunkSize = 11; 
                 const chunks = [];
                 for (let i = 0; i < page.items.length; i += chunkSize) chunks.push(page.items.slice(i, i + chunkSize));
                 if (chunks.length === 0) chunks.push([]);
@@ -613,6 +574,36 @@
 
         applyColumnToggles();
     }
+
+    // UPDATED LAYOUT HEADER FUNCTION
+    function generateHeader(title) {
+        // Logo is now much larger, sits on top with a bottom margin (mb-3)
+        const logoHtml = logoDataUrl ? `<div class="mb-3"><img src="${logoDataUrl}" style="max-height: 130px; max-width: 350px; object-fit: contain;"></div>` : '';
+        return `
+            <div class="row mb-3">
+                <div class="col-7 d-flex flex-column justify-content-start">
+                    ${logoHtml}
+                    <div class="company-details">
+                        <strong>Address:</strong> <span class="no-wrap" contenteditable="true" onblur="updateHeader('address', this.innerText)">${headerState.address}</span><br>
+                        <strong>Phone no.:</strong> <span class="no-wrap" contenteditable="true" onblur="updateHeader('phone', this.innerText)">${headerState.phone}</span><br>
+                        <strong>Email id.:</strong> <span class="no-wrap" contenteditable="true" onblur="updateHeader('email', this.innerText)">${headerState.email}</span><br>
+                        <strong>GST no.:</strong> <span class="no-wrap" contenteditable="true" onblur="updateHeader('gst', this.innerText)">${headerState.gst}</span><br>
+                        <strong>Udyam:</strong> <span class="no-wrap" contenteditable="true" onblur="updateHeader('udyam', this.innerText)">${headerState.udyam}</span>
+                    </div>
+                </div>
+                <div class="col-5 client-details text-end">
+                    <div class="mb-1"><strong>Date:</strong> <span class="no-wrap" contenteditable="true" onblur="updateHeader('date', this.innerText)">${headerState.date}</span></div>
+                    <div class="mb-2"><strong>Project Name:</strong> <br><span class="no-wrap fw-bold text-success" style="font-size: 14px;" contenteditable="true" onblur="updateHeader('project', this.innerText)">${headerState.project}</span></div>
+                </div>
+            </div>
+            <div class="section-title">${title}</div>
+        `;
+    }
+
+    window.updateHeader = function(field, val) {
+        headerState[field] = val;
+        triggerSave();
+    };
 
     // ACTIONS
     document.getElementById('plantSelect').addEventListener('change', function() {
