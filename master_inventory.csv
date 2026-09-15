@@ -1,0 +1,344 @@
+﻿Sr.no,Botanical Name,Common Name,DSR–Code,Height (ft),Spread (m),Spacing (m c/c),Unit Price,Effect,Canes,Category
+1,Bauhinia Blakeana,Hong Kong Orchid Tree,–,5,–,–,1000.00,–,–,–
+2,Delonix Regia,Gulmohar,–,5,–,–,600.00,–,–,–
+3,Callistemon Ianceolatus,Bottlebrush,–,5,–,–,600.00,–,–,–
+4,Cassia Fistula,Amaltas,–,4,–,–,480.00,–,–,–
+5,Azadirachta,Neem,–,5,–,–,600.00,–,–,–
+6,Mimusops elengi,Maulsari,–,5,–,–,600.00,–,–,–
+7,Plumeria alba,Safed Champa,–,6,–,–,1000.00,–,–,–
+8,Plumeria rubra,Red frangipani,–,5,–,–,1600.00,–,–,–
+9,Spathodea campanulata,African Tulip tree,–,5,–,–,600.00,–,–,–
+10,Polyalthia longifoila,Ashoka tree,–,–,–,–,480.00,–,–,–
+11,Bismarckia nobilis,Bismarck Palm,–,6,–,–,3500.00,–,–,7
+12,Caryota urens,Fishtail Palm,–,8,–,–,2500.00,–,–,7
+13,Pheonix sylvestris,Date palm,–,–,–,–,7000.00,–,–,7
+14,Wodyetia bifurcata,Foxtail palm,–,9,–,–,2000.00,–,–,7
+15,Terminalia Mantaly,Madagascar Almond,–,15,–,–,2000.00,–,–,–
+16,Bauhinia Acuminata,White orchid,–,2,0.4,0.5,160.00,–,–,–
+17,Bauhinia Tomentosa,Yellow Orchid,–,2,0.4,0.5,240.00,–,–,–
+18,Cassia Biflora,Golden Cassia,–,2,0.4,0.5,160.00,–,–,–
+19,Ficus Panda,Golden Ficus,–,1.5,0.4,0.4,50.00,–,–,–
+20,Tecoma Gaudichaudi,Yellow Bellsdwarf,–,2.5,0.6,0.5,80.00,–,–,–
+21,Hamelia Patens,Fire brush,–,1.5,0.4,0.4,80.00,–,–,–
+22,Hibiscus Rosa sinesis,China rose,–,2,0.4,0.5,50.00,–,–,–
+23,Marraya Exotica,Kamini,–,1.5,0.4,0.4,50.00,–,–,–
+24,Neriuim Oleander,Kaner,–,2.5,0.6,0.5,60.00,–,–,–
+25,Asparagus Sprengeri,Sprengeri Fern,–,1,0.3,–,50.00,Carpet,–,–
+26,Clerodendrum Inerme,Inerme,–,1,0.3,–,50.00,Carpet,–,–
+27,Cuphea Chinesis,–,–,1,0.3,–,50.00,Carpet,–,–
+28,Daniella Variegated,Variegated Flax Lily,–,1,0.2,–,150.00,Carpet,–,–
+29,Duranta Golden,Golden Dewdrop,–,1,0.3,–,25.00,Carpet,–,–
+30,Euphoria Milli Hybrid,Crown of Throns,–,1,0.3,–,80.00,Carpet,–,–
+31,Iresine Herbstii,Iresine,–,1,0.3,–,50.00,Carpet,–,–
+32,Ophiopogon black,Black Grass,–,0.5,0.2,–,50.00,Carpet,–,–
+33,Syngonium podophyllum,Syngonium,–,1,0.3,–,60.00,Carpet,–,–
+34,Wedelia Triloblata,Wedelia,–,0.5,0.2,–,50.00,Carpet,–,–
+35,Lawn Grass,Selection no.1,–,–,–,–,10.00,–,–,–
+36,Rhapis Excelsa,Broadleaf Lady Palm,–,–,–,–,500.00,–,–,7
+37,Chandni Dwarf,–,–,–,–,0.4,60.00,–,–,–
+38,Calliandea Haematocephala,Powder puff,–,2,–,0.6,50.00,–,–,–
+39,Calsalpinia Pulcherrima,Peacock Flower,–,2,–,0.6,60.00,–,–,–
+40,Alpinia Zerumbet variegata,Variegated shell ginger,–,–,–,–,150.00,–,–,–
+41,Schefflera arboricola variegata,Dwarf umbralla tree,–,–,–,–,100.00,–,–,–
+42,Tradescantia,Wandering jew,–,0.5,–,–,25.00,–,–,–
+43,Bambusa ventricosa,Buddha Belly Bamboo,–,6,–,–,800.00,–,3,–
+44,Phyllostachys aurea,Golden Bamboo,–,6,–,–,200.00,–,3,–
+4,Cassia nodasa,Pink shower,–,5,–,–,1500.00,–,–,–
+46,Jacaranda mimosofolia,Neeli gulmohar,–,5,–,–,300.00,–,–,–
+47,Plumeria alba dwarf,safed champa dwarf,–,–,–,–,850.00,–,–,–
+48,Pheonix roebelinii,Pigmy date palm,–,8,–,–,1100.00,–,–,7
+49,Cycas Revoluta,Sago Palm,–,–,–,–,7500.00,–,–,–
+50,Areca Palm,–,–,8,–,–,1500.00,–,–,–
+51,Bauhinia Blakeana,Hong Kong Orchid Tree,–,10,–,–,2000.00,–,–,–
+52,Delonix Regia,Gulmohar,–,15,–,–,2000.00,–,–,–
+53,Callistemon Ianceolatus,Bottlebrush,–,8,–,–,1500.00,–,–,–
+54,Cassia Fistula,Amaltas,–,12,–,–,1550.00,–,–,–
+55,Azadirachta,Neem,–,15,–,–,1000.00,–,–,–
+56,Mimusops elengi,Maulsari,–,10,–,–,1500.00,–,–,–
+57,Plumeria alba,Safed Champa,–,8,–,–,1500.00,–,–,–
+58,Plumeria rubra,Red frangipani,–,12,–,–,2000.00,–,–,–
+59,Spathodea campanulata,African Tulip tree,–,12,–,–,2000.00,–,–,–
+60,Polyalthia longifoila,Ashoka tree,–,12,–,–,1500.00,–,–,–
+61,Bismarckia nobilis,Bismarck Palm,–,12,–,–,15000.00,–,–,7
+62,Caryota urens,Fishtail Palm,–,12,–,–,2500.00,–,–,7
+63,Washingtonia Filifera Palm,California Fan Palm,–,15,–,–,15000.00,–,–,7
+64,Wodyetia bifurcata,Foxtail palm,–,15,–,–,2000.00,–,–,7
+65,Promogranate Bhagavan,–,–,5FT,–,–,550.00,–,–,2
+66,Sapota Cricket Ball,–,–,5FT,–,–,650.00,–,–,2
+67,Sapota Kalapathi,–,–,6FT,–,–,600.00,–,–,2
+68,Mosambi,–,–,5FT,–,–,550.00,–,–,2
+69,Jack Fruit Pink,–,–,6FT,–,–,600.00,–,–,2
+70,Jack Fruit All Time,–,–,5FT,–,–,600.00,–,–,2
+71,Jack Fruit Gum Less,–,–,5FT,–,–,600.00,–,–,2
+72,Santra,–,–,5FT,–,–,550.00,–,–,2
+73,Sweet Orange,–,–,5FT,–,–,550.00,–,–,2
+74,Star Fruit,–,–,5FT,–,–,550.00,–,–,2
+75,Litche,–,–,5FT,–,–,550.00,–,–,2
+76,Avacado,–,–,6FT,–,–,600.00,–,–,2
+77,Jamun White,–,–,8FT,–,–,600.00,–,–,2
+78,Jamun Black,–,–,8FT,–,–,550.00,–,–,2
+79,Apple Beer Regu,–,–,6FT,–,–,600.00,–,–,2
+80,Apple Beer Regu Red,–,–,5FT,–,–,800.00,–,–,2
+81,Guava Sapedha,–,–,6FT,–,–,550.00,–,–,2
+82,Guva Thai White,–,–,6FT,–,–,550.00,–,–,2
+83,Guava Thai Pink,–,–,6FT,–,–,550.00,–,–,2
+84,Guava Kg,–,–,6FT,–,–,550.00,–,–,2
+85,Guava L49,–,–,6FT,–,–,550.00,–,–,2
+86,Amla Big,–,–,6FT,–,–,600.00,–,–,2
+87,Amla Small,–,–,5FT,–,–,600.00,–,–,2
+88,Red Amla,–,–,5FT,–,–,800.00,–,–,2
+89,Sithafal,–,–,6FT,–,–,550.00,–,–,2
+90,Seedless Sithafal,–,–,5FT,–,–,800.00,–,–,2
+91,Ramafal,–,–,6FT,–,–,550.00,–,–,2
+92,Hanuman Fal,–,–,6FT,–,–,750.00,–,–,2
+93,Anjoor,–,–,5FT,–,–,600.00,–,–,2
+94,Papara Panas,–,–,5FT,–,–,600.00,–,–,2
+95,Market Lemon,–,–,4FT,–,–,550.00,–,–,2
+96,Thailand Lemon,–,–,4FT,–,–,650.00,–,–,2
+97,Balaji Lemon,–,–,4FT,–,–,550.00,–,–,2
+98,Tabel Lemon,–,–,5FT,–,–,550.00,–,–,2
+99,Sweet Lemon,–,–,3FT,–,–,600.00,–,–,2
+100,Kajuu Jedimamidi,–,–,6FT,–,–,600.00,–,–,2
+101,Water Apple White,–,–,6FT,–,–,550.00,–,–,2
+102,Water Apple Red,–,–,6FT,–,–,600.00,–,–,2
+103,Chentha Tamrind,–,–,6FT,–,–,550.00,–,–,2
+104,Egg Fruit,–,–,5FT,–,–,600.00,–,–,2
+105,Bird Cherry,–,–,6FT,–,–,600.00,–,–,2
+106,Vakka Cherry,–,–,5FT,–,–,600.00,–,–,2
+107,Barbados Cherry,–,–,5FT,–,–,600.00,–,–,2
+108,African Cherry,–,–,5FT,–,–,800.00,–,–,2
+109,Madigafalam,–,–,5FT,–,–,600.00,–,–,2
+110,Coconut Desi,–,–,8FT,–,–,550.00,–,–,2
+111,Coconut Hybrid Selonu Yellow,–,–,7FT,–,–,550.00,–,–,2
+112,Coconut Hybrid Sannagie Green,–,–,7FT,–,–,600.00,–,–,2
+113,Mango Beneshan,–,–,5FT,–,–,650.00,–,–,2
+114,Mango Totapuri,–,–,5FT,–,–,650.00,–,–,2
+115,Mango Cherukurasam,–,–,5FT,–,–,650.00,–,–,2
+116,Mango Himayath,–,–,5FT,–,–,650.00,–,–,2
+117,Mango Yallamanda,–,–,5FT,–,–,650.00,–,–,2
+118,Mango Neelam,–,–,5FT,–,–,650.00,–,–,2
+119,Mango Alfanso,–,–,5FT,–,–,650.00,–,–,2
+120,Mango Kesar,–,–,5FT,–,–,650.00,–,–,2
+121,Mango Mallika,–,–,5FT,–,–,650.00,–,–,2
+122,Mango Pedda Rasam,–,–,5FT,–,–,650.00,–,–,2
+123,Mango Chinna Rasam,–,–,5FT,–,–,650.00,–,–,2
+124,Mango Jalalu,–,–,5FT,–,–,650.00,–,–,2
+125,Mango Kothapalli Kobri,–,–,5FT,–,–,650.00,–,–,2
+126,Mango Tellagulabi,–,–,5FT,–,–,650.00,–,–,2
+127,Mango Panduri,–,–,5FT,–,–,650.00,–,–,2
+128,Mango Punasa,–,–,5FT,–,–,650.00,–,–,2
+129,Mango Nuzividu Rasam,–,–,5FT,–,–,650.00,–,–,2
+130,Mango Stem,–,–,6FT,–,–,9500.00,–,–,2
+131,Straw Berry Guava,–,–,5FT,–,–,800.00,–,–,2
+132,Rose Apple,–,–,5FT,–,–,800.00,–,–,2
+133,Surnam Cherry,–,–,4FT,–,–,800.00,–,–,2
+134,Penut Button,–,–,5FT,–,–,800.00,–,–,2
+135,Manali Cherry,–,–,3FT,–,–,800.00,–,–,2
+136,Rudraksha,–,–,5FT,–,–,700.00,–,–,2
+137,Black Guava,–,–,5FT,–,–,700.00,–,–,2
+138,Sweet Star Fruit,–,–,5FT,–,–,700.00,–,–,2
+139,Dragon Fruit,–,–,5FT,–,–,650.00,–,–,2
+140,Kiwi,–,–,2FT,–,–,300.00,–,–,2
+141,Passion Fruit,–,–,2FT,–,–,300.00,–,–,2
+142,Mulberry,–,–,5FT,–,–,750.00,–,–,2
+143,Wood Apple,–,–,3FT,–,–,600.00,–,–,2
+144,Albacaro Fruit,–,–,4FT,–,–,800.00,–,–,2
+14,Verigated Tabel Lemon,–,–,4FT,–,–,800.00,–,–,2
+146,Noni Fruit,–,–,5FT,–,–,800.00,–,–,2
+147,Milk Fruit,–,–,5FT,–,–,800.00,–,–,2
+148,Ice Cream Beans,–,–,5FT,–,–,900.00,–,–,2
+149,Paisa,–,–,5FT,–,–,650.00,–,–,2
+150,Malyalam Apple,–,–,5FT,–,–,650.00,–,–,2
+151,Dhaba Kaya,–,–,5FT,–,–,650.00,–,–,2
+152,Roses Desi,–,–,1FT,–,–,40.00,–,–,3
+153,Roses Hybrid,–,–,1FT,–,–,70.00,–,–,3
+154,Roses Kashmir,–,–,1FT,–,–,70.00,–,–,3
+155,Hibiscus Desi,–,–,1FT,–,–,25.00,–,–,3
+156,Hibiscus Hybrid,–,–,1FT,–,–,70.00,–,–,3
+157,Hibiscus Vysoyroy,–,–,1FT,–,–,70.00,–,–,3
+158,Cent Mallie,–,–,1FT,–,–,30.00,–,–,3
+159,Bondu Mallie,–,–,1FT,–,–,30.00,–,–,3
+160,Kanakambaram,–,–,1FT,–,–,25.00,–,–,3
+161,Sanajaji,–,–,1FT,–,–,30.00,–,–,3
+162,Verajaji,–,–,1FT,–,–,30.00,–,–,3
+163,Govardhanam,–,–,1FT,–,–,30.00,–,–,3
+164,Mini Nandhivardhanam,–,–,1FT,–,–,80.00,–,–,3
+165,Rekha Nandhivardhanam,–,–,1FT,–,–,80.00,–,–,3
+166,Mudha Nandhivardhanam,–,–,1FT,–,–,100.00,–,–,3
+167,Verigated Nandhivardhanam,–,–,1FT,–,–,100.00,–,–,3
+168,Ganeru Red,–,–,1FT,–,–,30.00,–,–,3
+169,Ganeru Pink,–,–,1FT,–,–,30.00,–,–,3
+170,Ganeru White,–,–,1FT,–,–,30.00,–,–,3
+171,Sempangi White,–,–,3FT,–,–,300.00,–,–,3
+172,Sempangi Orange,–,–,3FT,–,–,300.00,–,–,3
+173,White Night Queen,–,–,1FT,–,–,30.00,–,–,3
+174,Nuruvarahalu,–,–,1FT,–,–,80.00,–,–,3
+175,Ixora Singapories,–,–,1FT,–,–,80.00,–,–,3
+176,Mini Ixora,–,–,1FT,–,–,80.00,–,–,3
+177,Allamanda,–,–,1FT,–,–,80.00,–,–,3
+178,Plumeria Pudica,–,–,5FT,–,–,80.00,–,–,3
+179,Temple Tree,–,–,2FT,–,–,150.00,–,–,3
+180,Adonium,–,–,1FT,–,–,150.00,–,–,3
+181,Ground Roses,–,–,1FT,–,–,25.00,–,–,3
+182,Suvarna Ganeru ( Tecoma),–,–,5FT,–,–,80.00,–,–,3
+183,Banthi ( Seasonal),–,–,1FT,–,–,70.00,–,–,3
+184,Chamanthi ( Seasonal ),–,–,1FT,–,–,70.00,–,–,3
+185,Seasonal Flowers,–,–,1FT,–,–,35.00,–,–,3
+186,Lotus,–,–,1FT,–,–,400.00,–,–,3
+187,Jacquemontia Creeper,–,–,1FT,–,–,50.00,–,–,4
+188,Honey Suckle Vine Creeper,–,–,1FT,–,–,50.00,–,–,4
+189,Madhumalathi Creeper,–,–,1FT,–,–,50.00,–,–,4
+190,Petrea Volubillis Creeper,–,–,1FT,–,–,50.00,–,–,4
+191,Almond Yellow Creeper,–,–,1FT,–,–,50.00,–,–,4
+192,Radhamanohar Creeper,–,–,1FT,–,–,50.00,–,–,4
+193,Galphimia Creeper,–,–,1FT,–,–,50.00,–,–,4
+194,Wall Creeper,–,–,1FT,–,–,50.00,–,–,4
+195,Garlic Creeper,–,–,1FT,–,–,50.00,–,–,4
+196,Morning Glory Creeper,–,–,1FT,–,–,50.00,–,–,4
+197,Clerodendron Creeper,–,–,1FT,–,–,50.00,–,–,4
+198,Clematis Gloriana Creeper,–,–,1FT,–,–,50.00,–,–,4
+199,Shankupushpam  Blue & White Creeper,–,–,1FT,–,–,50.00,–,–,4
+200,Radhamanohar Mudha Creeper,–,–,1FT,–,–,50.00,–,–,4
+201,Rakhi Creeper,–,–,1FT,–,–,50.00,–,–,4
+202,Jakhmasia,–,–,1FT,–,–,50.00,–,–,4
+203,Curtain Creeper,–,–,1FT,–,–,50.00,–,–,4
+204,Bignonia Yellow Creeper,–,–,1FT,–,–,50.00,–,–,4
+205,Tambarjia White & Red Creeper,–,–,1FT,–,–,50.00,–,–,4
+206,Clerodendron Thomsoniae White Creeper,–,–,1FT,–,–,50.00,–,–,4
+207,Princes Wine Creeper,–,–,1FT,–,–,50.00,–,–,4
+208,Deck Creeper,–,–,1FT,–,–,50.00,–,–,4
+209,Adenocalymma Allicea Creeper,–,–,1FT,–,–,50.00,–,–,4
+210,Sannajajji Creeper,–,–,1FT,–,–,50.00,–,–,4
+211,Chineshiya Creeper,–,–,1FT,–,–,50.00,–,–,4
+212,Azadirachta Indica ( Neem ),–,–,8FT,–,–,400.00,–,–,5
+213,Pongamia Pinnata ( Kanuga),–,–,8FT,–,–,400.00,–,–,5
+214,Bakul (Bogada),–,–,8FT,–,–,40.00,–,–,5
+215,Michalia Champaca (Sempangi),–,–,8FT,–,–,40.00,–,–,5
+216,Cordia Sebestena,–,–,8FT,–,–,500.00,–,–,5
+217,Lagestromia Speciosa,–,–,8FT,–,–,400.00,–,–,5
+218,Terminalia Mantaly,–,–,8FT,–,–,40.00,–,–,5
+219,Bauhinia Blackeana,–,–,8FT,–,–,400.00,–,–,5
+220,Bahunia Temantosa,–,–,8FT,–,–,40.00,–,–,5
+221,Tabebuia Rosea,–,–,8FT,–,–,400.00,–,–,5
+222,Putranjiva,–,–,8FT,–,–,40.00,–,–,5
+223,Peltophorum,–,–,8FT,–,–,400.00,–,–,5
+224,Tabebuia Argentia,–,–,6FT,–,–,500.00,–,–,5
+225,Spathodia,–,–,8FT,–,–,400.00,–,–,5
+226,Tabebuia Avallandae,–,–,8FT,–,–,500.00,–,–,5
+227,Cassia Fistula,–,–,8FT,–,–,40.00,–,–,5
+228,Filicium Decipiens,–,–,6FT,–,–,600.00,–,–,5
+229,Anthocephalus Cadamba,–,–,8FT,–,–,400.00,–,–,5
+230,Butea Monosperma ( Modhuga ),–,–,5FT,–,–,800.00,–,–,5
+231,Nyctanthus Arbor Tristis ( Parijatham ),–,–,8FT,–,–,40.00,–,–,5
+232,Aegle Marmelos,–,–,6FT,–,–,550.00,–,–,5
+233,Albizzia Lebbeck ( Rain Tree ),–,–,8FT,–,–,400.00,–,–,5
+234,Pithecellium Dulce ( Sema Chintha ),–,–,6FT,–,–,550.00,–,–,5
+235,Seetha Ashoka,–,–,5FT,–,–,650.00,–,–,5
+236,Calophyllum Inophyllum ( Ponna ),–,–,8FT,–,–,40.00,–,–,5
+237,Bottle Bush Green,–,–,6FT,–,–,40.00,–,–,5
+238,Bottle Bush Gold,–,–,6FT,–,–,700.00,–,–,5
+239,Switenia Mahagony,–,–,8FT,–,–,400.00,–,–,5
+240,Kaya Mahagani,–,–,8FT,–,–,500.00,–,–,5
+241,Cassia Javanica,–,–,7FT,–,–,800.00,–,–,5
+242,Ceioba Pentendra ( Buruga ),–,–,8FT,–,–,400.00,–,–,5
+243,Jacaranda Mimosifolia,–,–,8FT,–,–,40.00,–,–,5
+244,Erithrina Indica,–,–,6FT,–,–,1000.00,–,–,5
+24,Tecoma Stans,–,–,8FT,–,–,400.00,–,–,5
+246,Alastonia Scoloris,–,–,6FT,–,–,40.00,–,–,5
+247,Sterculia Foteda ( Dekka Badam ),–,–,8FT,–,–,400.00,–,–,5
+248,Delonix Regia ( Gulmohar ),–,–,8FT,–,–,400.00,–,–,5
+249,Tespesia Populina ( Ganga Rave ),–,–,8FT,–,–,400.00,–,–,5
+250,Cassia  Semia,–,–,8FT,–,–,400.00,–,–,5
+251,Terminilia Cattapa ( Badam ),–,–,8FT,–,–,400.00,–,–,5
+252,Millingtonia Hortensis ( Akasamalli ),–,–,8FT,–,–,400.00,–,–,5
+253,Tabebuia Pallida,–,–,8FT,–,–,400.00,–,–,5
+254,Banyan ( Maree),–,–,8FT,–,–,40.00,–,–,5
+255,Ficus Religiosa ( Ravee),–,–,8FT,–,–,400.00,–,–,5
+256,Ashoka,–,–,8FT,–,–,40.00,–,–,5
+257,Dalbergia Sisoo,–,–,8FT,–,–,400.00,–,–,5
+258,Terminilia Arjuna ( Nalla Madhe ),–,–,8FT,–,–,400.00,–,–,5
+259,Conocarpus,–,–,8FT,–,–,400.00,–,–,5
+260,Jamun,–,–,8FT,–,–,400.00,–,–,5
+261,Terminilia Green,–,–,8FT,–,–,40.00,–,–,5
+262,Terminilia White,–,–,5FT,–,–,5000.00,–,–,5
+263,Foxtail Palm,–,–,9FT,–,–,600.00,–,–,6
+264,Royal Palm,–,–,9FT,–,–,400.00,–,–,6
+265,Kentia Palm,–,–,6FT,–,–,800.00,–,–,6
+266,Red Palm,–,–,6FT,–,–,1000.00,–,–,6
+267,Red Neck Palm,–,–,6FT,–,–,2000.00,–,–,6
+268,Mirchi Meri Green Palm,–,–,6FT,–,–,500.00,–,–,6
+269,Mirchi Meri Gold Palm,–,–,6FT,–,–,1800.00,–,–,6
+270,Washingtonia Palm,–,–,4FT,–,–,800.00,–,–,6
+271,Areca Palm,–,–,5FT,–,–,40.00,–,–,6
+272,Traveller Palm,–,–,6FT,–,–,500.00,–,–,6
+273,Supari Palm,–,–,9FT,–,–,600.00,–,–,6
+274,Pencile Pine Palm,–,–,5FT,–,–,800.00,–,–,6
+275,Fishtail Palm,–,–,8FT,–,–,600.00,–,–,6
+276,Tabel Palm,–,–,4FT,–,–,700.00,–,–,6
+277,Fan Palm,–,–,4FT,–,–,700.00,–,–,6
+278,Grandisc Palm,–,–,3FT,–,–,800.00,–,–,6
+279,Lotania Rubra Palm,–,–,4FT,–,–,800.00,–,–,6
+280,Bismarkia Palm,–,–,3FT,–,–,1000.00,–,–,6
+281,Cycus Palm,–,–,3FT,–,–,1000.00,–,–,6
+282,Raphis Palm,–,–,3FT,–,–,800.00,–,–,6
+283,Champion Palm,–,–,5FT,–,–,1000.00,–,–,6
+284,Phoneix Palm,–,–,3FT,–,–,800.00,–,–,6
+285,Cane Palm,–,–,5FT,–,–,800.00,–,–,6
+286,Triangle Palm,–,–,5FT,–,–,1000.00,–,–,6
+287,Date Palm,–,–,10FT,–,–,10000.00,–,–,6
+288,Radermachera,–,–,5FT,–,–,40.00,–,–,7
+289,Lovely Ficus,–,–,4FT,–,–,500.00,–,–,7
+290,Ficus Star Light,–,–,4FT,–,–,500.00,–,–,7
+291,Ficus Black,–,–,4FT,–,–,400.00,–,–,7
+292,Ficus Panda,–,–,3FT,–,–,350.00,–,–,7
+293,Ficus Prestage,–,–,4FT,–,–,400.00,–,–,7
+294,Plumeria White,–,–,5FT,–,–,650.00,–,–,7
+295,Plumeria Red,–,–,5FT,–,–,650.00,–,–,7
+296,Plumeria Dwarf Singapore,–,–,3FT,–,–,650.00,–,–,7
+297,Plumeria Pong Pong,–,–,6FT,–,–,800.00,–,–,7
+298,Plumeria Yellow,–,–,4FT,–,–,650.00,–,–,7
+299,Golden Thuja,–,–,4FT,–,–,1000.00,–,–,7
+300,Green Cypress,–,–,4FT,–,–,800.00,–,–,7
+301,American Cypress,–,–,5FT,–,–,1000.00,–,–,7
+302,Yucca Silver,–,–,4FT,–,–,1000.00,–,–,7
+303,Furcuria,–,–,3FT,–,–,1000.00,–,–,7
+304,Ujinia Mini Leaf,–,–,5FT,–,–,600.00,–,–,7
+305,Ujinia Broad Leaf,–,–,5FT,–,–,500.00,–,–,7
+306,Ficus Nuda,–,–,6FT,–,–,3500.00,–,–,7
+307,Appollo Ficus,–,–,6FT,–,–,3500.00,–,–,7
+308,Ficus Microcarpa,–,–,6FT,–,–,3500.00,–,–,7
+309,Brassia,–,–,6FT,–,–,1000.00,–,–,7
+310,Bouganvilla Colours,–,–,3FT,–,–,40.00,–,–,7
+311,Nicodia,–,–,3FT,–,–,550.00,–,–,7
+312,Ficus Lyrata,–,–,6FT,–,–,800.00,–,–,7
+313,Thespodium,–,–,6FT,–,–,600.00,–,–,7
+314,Oranamental Banana,–,–,3FT,–,–,1000.00,–,–,7
+315,Crinium Lilly Black,–,–,3FT,–,–,800.00,–,–,7
+316,Crinium Lilly Green,–,–,3FT,–,–,800.00,–,–,7
+317,Tower Tree,–,–,10FT,–,–,5500.00,–,–,7
+318,Heliconia Pistacorum,–,–,3FT,–,–,120.00,–,–,7
+319,Heliconia Lady Di,–,–,3FT,–,–,150.00,–,–,7
+320,Heliconia Dwarf,–,–,2FT,–,–,120.00,–,–,7
+321,Heliconia Fire Flash,–,–,2FT,–,–,150.00,–,–,7
+322,Heliconia Verigated,–,–,2FT,–,–,150.00,–,–,7
+323,Alocasia,–,–,3FT,–,–,40.00,–,–,7
+324,Dracena Mahatama,–,–,2FT,–,–,90.00,–,–,7
+325,Petra Crotons,–,–,2FT,–,–,150.00,–,–,7
+326,Rubber Plant,–,–,6FT,–,–,800.00,–,–,7
+327,Cusia Rosea,–,–,6FT,–,–,800.00,–,–,7
+328,Philodendron Xanadu,–,–,2FT,–,–,200.00,–,–,7
+329,Philodendron Sellum,–,–,2FT,–,–,150.00,–,–,7
+330,Red Lagastomia,–,–,6FT,–,–,800.00,–,–,7
+331,Dracena Calaroma,–,–,2FT,–,–,120.00,–,–,7
+332,Pison Alba Gold,–,–,2FT,–,–,120.00,–,–,7
+333,Calathea Lutea,–,–,6FT,–,–,800.00,–,–,7
+334,Malpigea Shapes,–,–,5FT,–,–,3500.00,–,–,7
+335,Dracena Draco,–,–,5FT,–,–,5500.00,–,–,7
+336,Arcelia Christmas Tree,–,–,8FT,–,–,1200.00,–,–,7
+337,Bouganvilla Pink,–,–,3FT,–,–,40.00,–,–,7
+338,Bouganvilla White,–,–,3FT,–,–,40.00,–,–,7
+339,Bouganvilla Yellow,–,–,3FT,–,–,40.00,–,–,7
+340,Bouganvilla Orange,–,–,3FT,–,–,40.00,–,–,7
+341,Bouganvilla Red,–,–,3FT,–,–,40.00,–,–,7
+342,Bouganvilla Thimma,–,–,3FT,–,–,550.00,–,–,7
+343,Thailand Imported Bouganvilla 5 Colous,–,–,POT,–,–,5500.00,–,–,7

@@ -11,7 +11,7 @@
         .btn-leaf:hover { background-color: #40916c; color: white; }
         .split-bg { background: linear-gradient(to bottom, #ffffff 35%, #D8E2DC 35%); min-height: calc(100vh - 60px); padding: 40px 0; }
         .hero-card { background: white; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
-        .plant-selector-box { max-height: 250px; overflow-y: auto; border: 1px solid #eaeaea; border-radius: 12px; text-align: left; background: #fdfdfd; }
+        .plant-selector-box { overflow-y: auto; border: 1px solid #eaeaea; border-radius: 12px; text-align: left; background: #fdfdfd; }
     </style>
 </head>
 <body>
@@ -27,17 +27,22 @@
         <p class="text-muted mb-4 small">Select pre-existing inventory items and enter your client name to begin.</p>
         
         <form action="/new_quotation" method="POST">
-            <!-- Plant Selector List with Heights -->
-            <div class="plant-selector-box p-3 mb-4">
-                <div class="text-uppercase small fw-bold text-muted mb-2">Select Inventory Items</div>
+            <!-- NEW: Category Filter Buttons -->
+            <div class="d-flex flex-wrap gap-2 mb-3 justify-content-center">
+                <button type="button" class="btn btn-sm btn-leaf cat-btn active" onclick="filterIndex('All', this)">All</button>
+                {% for cat in items|map(attribute='category_name')|unique %}
+                <button type="button" class="btn btn-sm btn-outline-secondary cat-btn" onclick="filterIndex('{{ cat }}', this)">{{ cat }}</button>
+                {% endfor %}
+            </div>
+
+            <!-- Plant Selector List -->
+            <div class="plant-selector-box p-3 mb-4" style="height: 280px;">
                 {% for item in items %}
-                <div class="form-check mb-2">
+                <div class="form-check mb-2 plant-item" data-category="{{ item.category_name }}">
                     <input class="form-check-input" type="checkbox" name="selected_items" value="{{ item.id }}" id="item{{ item.id }}">
                     <label class="form-check-label w-100 small" for="item{{ item.id }}">
                         <strong class="text-dark">{{ item.botanical_name }}</strong> 
                         {% if item.height %}<span class="text-success fw-bold ms-1">[H: {{ item.height }}]</span>{% endif %}
-                        {% if item.common_name %}<span class="text-muted ms-1">({{ item.common_name }})</span>{% endif %}
-                        <span class="float-end fw-bold text-dark">₹{{ item.price }}</span>
                     </label>
                 </div>
                 {% else %}
@@ -51,5 +56,25 @@
     </div>
 </div>
 
+<script>
+function filterIndex(category, btnElement) {
+    // Update button colors
+    document.querySelectorAll('.cat-btn').forEach(btn => {
+        btn.classList.remove('btn-leaf', 'active');
+        btn.classList.add('btn-outline-secondary');
+    });
+    btnElement.classList.remove('btn-outline-secondary');
+    btnElement.classList.add('btn-leaf', 'active');
+
+    // Hide/Show plants based on category
+    document.querySelectorAll('.plant-item').forEach(item => {
+        if (category === 'All' || item.getAttribute('data-category') === category) {
+            item.style.display = 'block';
+        } else {
+            item.style.display = 'none';
+        }
+    });
+}
+</script>
 </body>
 </html>

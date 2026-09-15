@@ -102,17 +102,27 @@
                 </div>
             </div>
 
+            <!-- Plant Manager -->
             <div id="plantManagerContainer" class="sidebar-section" style="display: none;">
                 <div class="sidebar-title text-warning">2. Manage Plants</div>
+                
+                <select id="categoryFilter" class="form-select form-select-sm shadow-sm mb-2" onchange="filterEditorPlants()">
+                    <option value="All">All Categories</option>
+                    {% for cat in items|map(attribute='category_name')|unique %}
+                    <option value="{{ cat }}">{{ cat }}</option>
+                    {% endfor %}
+                </select>
+
                 <select id="plantSelect" class="form-select form-select-sm shadow-sm mb-3">
                     <option value="" selected disabled>+ Add Plant...</option>
                     {% for item in items %}
-                    <option value="{{ item.price }}" data-id="{{ item.id }}" data-common="{{ item.common_name or '' }}" data-height="{{ item.height or '' }}" data-spread="{{ item.spread or '' }}" data-spacing="{{ item.spacing or '' }}" data-effect="{{ item.effect or '' }}">{{ item.botanical_name }} {% if item.height %}[H: {{ item.height }}]{% endif %}</option>
+                    <option class="plant-option" value="{{ item.price }}" data-category="{{ item.category_name }}" data-id="{{ item.id }}" data-common="{{ item.common_name or '' }}" data-height="{{ item.height or '' }}" data-spread="{{ item.spread or '' }}" data-spacing="{{ item.spacing or '' }}" data-effect="{{ item.effect or '' }}">{{ item.botanical_name }} {% if item.height %}[H: {{ item.height }}]{% endif %}</option>
                     {% endfor %}
                 </select>
                 <div id="sidebarPlantList" class="d-flex flex-column"></div>
             </div>
 
+            <!-- Service Manager -->
             <div id="serviceManagerContainer" class="sidebar-section" style="display: none;">
                 <div class="sidebar-title text-warning">2. Manage Services</div>
                 <select id="serviceSelect" class="form-select form-select-sm shadow-sm mb-3">
@@ -441,7 +451,6 @@
                     `;
                 });
 
-                // REDUCED TO 6 to allow space for the taller stacked header
                 for (let i = page.items.length; i < 6; i++) {
                     rowsHtml += `<tr class="empty-row"><td></td><td></td><td></td><td></td><td></td></tr>`;
                 }
@@ -492,7 +501,6 @@
             
             // --- PLANTS PAGE ---
             if(page.type === 'plants') {
-                // REDUCED TO 11 to allow space for the taller stacked header
                 const chunkSize = 11; 
                 const chunks = [];
                 for (let i = 0; i < page.items.length; i += chunkSize) chunks.push(page.items.slice(i, i + chunkSize));
@@ -510,11 +518,11 @@
                             <tr>
                                 <td class="text-muted text-center" style="width:30px;">${globalIdx + 1}</td>
                                 <td class="fw-semibold" contenteditable="true" onblur="updateRowName('${page.id}', ${globalIdx}, this)">${cleanName}</td>
-                                <td class="col-common" contenteditable="true">${item.common}</td>
-                                <td class="col-height" contenteditable="true">${item.height}</td>
-                                <td class="col-spread" contenteditable="true">${item.spread}</td>
-                                <td class="col-spacing" contenteditable="true">${item.spacing}</td>
-                                <td class="col-effect" contenteditable="true">${item.effect}</td>
+                                <td class="col-common" contenteditable="true" onblur="updateRowField('${page.id}', ${globalIdx}, 'common', this.innerText)">${item.common}</td>
+                                <td class="col-height" contenteditable="true" onblur="updateRowField('${page.id}', ${globalIdx}, 'height', this.innerText)">${item.height}</td>
+                                <td class="col-spread" contenteditable="true" onblur="updateRowField('${page.id}', ${globalIdx}, 'spread', this.innerText)">${item.spread}</td>
+                                <td class="col-spacing" contenteditable="true" onblur="updateRowField('${page.id}', ${globalIdx}, 'spacing', this.innerText)">${item.spacing}</td>
+                                <td class="col-effect" contenteditable="true" onblur="updateRowField('${page.id}', ${globalIdx}, 'effect', this.innerText)">${item.effect}</td>
                                 <td class="qty">${item.qty}</td>
                                 <td class="price no-wrap" contenteditable="true" onblur="updateRowPrice('${page.id}', ${globalIdx}, this)">${item.price.toFixed(2)}</td>
                                 <td class="row-total fw-bold text-end pe-2">${(item.qty * item.price).toFixed(2)}</td>
@@ -575,9 +583,7 @@
         applyColumnToggles();
     }
 
-    // UPDATED LAYOUT HEADER FUNCTION
     function generateHeader(title) {
-        // Logo is now much larger, sits on top with a bottom margin (mb-3)
         const logoHtml = logoDataUrl ? `<div class="mb-3"><img src="${logoDataUrl}" style="max-height: 130px; max-width: 350px; object-fit: contain;"></div>` : '';
         return `
             <div class="row mb-3">
@@ -611,9 +617,14 @@
         const page = documentPages.find(p => p.id === activePageId);
         const opt = this.options[this.selectedIndex];
         page.items.push({
-            name: opt.text, common: opt.getAttribute('data-common') || '', height: opt.getAttribute('data-height') || '',
-            spread: opt.getAttribute('data-spread') || '', spacing: opt.getAttribute('data-spacing') || '',
-            effect: opt.getAttribute('data-effect') || '', qty: 1, price: parseFloat(opt.value) || 0
+            name: opt.text, 
+            common: opt.getAttribute('data-common') || '', 
+            height: opt.getAttribute('data-height') || '',
+            spread: opt.getAttribute('data-spread') || '', 
+            spacing: opt.getAttribute('data-spacing') || '',
+            effect: opt.getAttribute('data-effect') || '', 
+            qty: 1, 
+            price: parseFloat(opt.value) || 0
         });
         this.value = ''; updateUI(); triggerSave();
     });
@@ -652,6 +663,12 @@
     window.updateRowName = function(pageId, index, element) {
         documentPages.find(p => p.id === pageId).items[index].name = element.innerText;
         triggerSave();
+    };
+    
+    // NEW FUNCTION: Save custom typed data inside the plant detail columns instantly!
+    window.updateRowField = function(pageId, index, field, val) {
+        documentPages.find(p => p.id === pageId).items[index][field] = val;
+        triggerSave(); 
     };
 
     window.updateRowPrice = function(pageId, index, element) {
@@ -694,6 +711,24 @@
             reader.readAsDataURL(e.target.files[0]);
         }
     });
+
+    let allPlantOptions = [];
+    document.addEventListener("DOMContentLoaded", () => {
+        allPlantOptions = Array.from(document.querySelectorAll('.plant-option'));
+    });
+
+    function filterEditorPlants() {
+        const selectedCat = document.getElementById('categoryFilter').value;
+        const plantSelect = document.getElementById('plantSelect');
+        
+        plantSelect.innerHTML = '<option value="" selected disabled>+ Add Plant...</option>';
+        
+        allPlantOptions.forEach(opt => {
+            if (selectedCat === "All" || opt.getAttribute('data-category') === selectedCat) {
+                plantSelect.appendChild(opt);
+            }
+        });
+    }
 </script>
 </body>
 </html>
