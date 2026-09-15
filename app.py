@@ -205,5 +205,71 @@ def upload_bg(quote_id):
         conn.close()
     return redirect(url_for('editor', quote_id=quote_id))
 
+@app.route('/cloud-setup')
+def cloud_setup():
+    import csv
+    import os
+    
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    
+    # 1. Safely drop the broken tables
+    cursor.execute('DROP TABLE IF EXISTS items CASCADE;')
+    cursor.execute('DROP TABLE IF EXISTS services CASCADE;')
+    conn.commit()
+    
+    # 2. Force the app to rebuild them with the correct columns
+    init_app_db()
+    
+    # 3. Import the 8 Services directly
+    cursor.execute('TRUNCATE TABLE services RESTART IDENTITY CASCADE;')
+    services = [
+        ('Fine Grading', 3.50, 'per sqft'),
+        ('Garden Development (small plants)', 30.00, 'per plant'),
+        ('Garden Development (big plants)', 100.00, 'per plant'),
+        ('After Maintenance', 150000.00, 'per month'),
+        ('Extra Charge', 20.00, 'per plant'),
+        ('Lawn Cutting', 15000.00, 'per month'),
+        ('Pesticides and Fertilizers', 15000.00, 'per month'),
+        ('Transportation Charges', 3000.00, 'per tonne')
+    ]
+    cursor.executemany('INSERT INTO services (description, price, unit_type) VALUES (%s, %s, %s)', services)
+    
+    # 4. Import the Master Inventory CSV
+    insert_count = 0
+    if os.path.exists('master_inventory.csv'):
+        cursor.execute('TRUNCATE TABLE items RESTART IDENTITY CASCADE;')
+        with open('master_inventory.csv', 'r', encoding='utf-8-sig') as file:
+            reader = csv.DictReader(file)
+            reader.fieldnames = [name.strip() if name else '' for name in reader.fieldnames]
+            for row in reader:
+                clean_row = {k.strip(): (v.strip() if v else '') for k, v in row.items() if k}
+                price_raw = clean_row.get('Price', '0').replace(',', '').replace('₹', '').strip()
+                try: 
+                    price_val = float(price_raw) if price_raw and price_raw != '-' else 0.0
+                except ValueError: 
+                    price_val = 0.0
+                
+                cat_raw = clean_row.get('Category_ID') or clean_row.get('Category') or clean_row.get('category_id') or '1'
+                if str(cat_raw).strip() in ['-', '', 'None', 'null']: 
+                    cat_id = 1
+                else:
+                    try: 
+                        cat_num = int(float(cat_raw))
+                        cat_id = cat_num if 1 <= cat_num <= 7 else 1
+                    except ValueError: 
+                        cat_id = 1
+
+                cursor.execute('''
+                    INSERT INTO items (botanical_name, common_name, dsr, height, spread, spacing, effect, price, category_id)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+                ''', (clean_row.get('Botanical Name', ''), clean_row.get('Common Name', ''), clean_row.get('DSR', ''), clean_row.get('Height', ''), clean_row.get('Spread', ''), clean_row.get('Spacing', ''), clean_row.get('Effect', ''), price_val, cat_id))
+                insert_count += 1
+
+    conn.commit()
+    cursor.close()
+    conn.close()
+    
+    return f"✅ SUCCESS! Cloud Database wiped, {insert_count} plants imported, and 8 services restored. You can now return to the home page."
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
